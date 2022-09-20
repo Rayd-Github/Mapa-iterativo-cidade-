@@ -1,0 +1,52 @@
+# Mapa iterativo cidade
+
+# Polígonos
+# https://concla.ibge.gov.br/classificacoes/por-tema/codigo-de-areas/codigo-de-areas
+
+list_geobr()
+conj_dados = list_geobr()
+View(conj_dados)
+
+library(geobr)
+library(sf)
+library(magrittr)
+library(leaflet)
+
+# Mapa Brasil
+Brasil<-read_state(code_state = "all", year = 2018)
+ggplot()+ geom_sf(data = Brasil, fill="#2D3E50", color = "#FEBF57", size = 0.15,
+                  show.legend = F)
+
+# Mapa Paraná
+Parana<-read_state(code_state = "PR", year = 2018)
+ggplot()+ geom_sf(data = Parana, fill="#2D3E50", color = "#FEBF57", size = 0.15,
+                  show.legend = F)
+
+# Mapa municípios Paraná
+Municipios_PR<-read_municipality(code_muni = "PR", year = 2018)
+ggplot()+ geom_sf(data = Municipios_PR, fill="#2D3E50", color = "#FEBF57", size = 0.15,
+                  show.legend = F)
+
+# Procurando código de cidade específica
+all_mun_ms <- read_municipality(code_muni="PR", year=2018)
+class(all_mun_ms)
+names(all_mun_ms)
+View(all_mun_ms)
+
+# Mapa Ponta_grossa
+Ponta_grossa <- read_municipality(code_muni=4119905, year=2017)
+ggplot()+ geom_sf(data = Ponta_grossa,
+                  fill="#2D3E50", 
+                  color = "#FEBF57", 
+                  size = 0.15,
+                  show.legend = F)
+
+map<- leaflet(Ponta_grossa) %>% addTiles()
+map %>% addPolygons()
+
+map %>% addPolygons(
+    weight = 1,
+    opacity = 0.5,
+    color = "yellow",
+    dashArray = "1",
+    fillOpacity = 0.5)
